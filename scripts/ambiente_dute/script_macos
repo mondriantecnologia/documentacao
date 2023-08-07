@@ -1,0 +1,63 @@
+################### Mondrian Tecnologia ###################
+####    Configuracao ambiente Dute - MacOSX - Intel    ####
+###########################################################
+
+
+#Instalando o brew
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+#instalar python2
+
+#instalar o rbenv
+brew install rbenv
+
+#instalar postgresl e libpq
+brew install postgresql@14
+brew services start postgresql@14
+brew install libpq
+echo 'export PATH="/usr/local/opt/libpq/bin:$PATH"' >> ~/.zshrc
+export LDFLAGS="-L/usr/local/opt/libpq/lib"
+export CPPFLAGS="-I/usr/local/opt/libpq/include"
+
+#instalar nvm
+brew install nvm
+mkdir ~/.nvm
+
+#Adicionar ao seu  shell profile ex. ~/.profile ou ~/.zshrc:
+  export NVM_DIR="$HOME/.nvm"
+  [ -s "/usr/local/opt/nvm/nvm.sh" ] && \. "/usr/local/opt/nvm/nvm.sh"  # This loads nvm
+  [ -s "/usr/local/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/usr/local/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion
+
+#setar a versao do ruby para 2.6.3 local
+# no diretorio do projeto
+rbenv install 2.6.3
+rbenv local 2.6.3
+rbenv rehash
+
+#apontar para o ruby do rbenv
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+# algumas dependencias
+brew install shared-mime-info #mimemagic
+
+# ir para o diretorio do projeto
+gem install bundler
+bundle install
+rbenv rehash
+
+#instalando o node
+nvm install 18.6.0
+nvm use 18.6.0
+nvm alias default 18.6.0
+
+#instalar o yarn
+
+brew install yarn
+yarn install
+export NODE_OPTIONS=--openssl-legacy-provider
+bundle exec rails webpacker:compile
+
+
+rails webpacker:install
